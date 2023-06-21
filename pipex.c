@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:27:53 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/20 18:11:47 by malancar         ###   ########.fr       */
+/*   Updated: 2023/06/21 18:36:55 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,60 +51,59 @@ void	pipex()
 int	main(int ac, char **av, char **envp)
 {
 	int		fd[2];
-	char	**cmd;
+	char	**cmd1;
+	char	**cmd2;
 	char	*valid_cmd_path;
 	int		pid;
-	//int		infile;
-	//int		outfile;
+	int		infile;
+	int		outfile;
 
-	if (ac < 6)
+	if (ac < 5)
 		return (0);
 	//printf("ici : %p\n", &valid_cmd_path);
 	//heck_command(av[2], envp, &cmd, &valid_cmd_path);
 	
 	int		i;
-	char	*cmd1;
-	char	*cmd2;
 	i = 0;
-	cmd = ft_split(av[2], ' ');
-	if (!cmd)
+	cmd1 = ft_split(av[2], ' ');
+	cmd2 = ft_split(av[3], ' ');
+	if (!cmd1)
 		return (1);
-	cmd1 = cmd[0];
-	cmd2 = cmd[1];
 	while (envp[i])
 	{
 		if (strncmp(envp[i], "PATH", 4) == 0)
 			break ;
 		i++;
 	}
-	if (check_access(cmd1, &envp[i][5], &valid_cmd_path) == 0)
+	if (check_access(cmd1[0], &envp[i][5], &valid_cmd_path) == 0)
 	{
-		free_tab(cmd);
+		free_tab(cmd1);
 		printf("error");
 		return (1);
 	}
-	if (check_access(cmd2, &envp[i][5], &valid_cmd_path) == 0)
+	if (check_access(cmd2[0], &envp[i][5], &valid_cmd_path) == 0)
 	{
-		free_tab(cmd);
+		free_tab(cmd2);
 		printf("error");
 		return (1);
 	}
 	//fd = init_fd(av[1], av[3], fd[2]);
-	fd[0] = open(av[1], O_RDONLY);
-	if (fd[0] == -1)
+	//infile = 
+	infile = open(av[1], O_RDONLY);
+	if (infile == -1)
 	{
-		close(fd[0]);
+		close(infile);
 		return (0);
 	}
-	fd[1] = open(av[3], O_WRONLY);
-	if (fd[1] == -1)
+	outfile = open(av[4], O_WRONLY);
+	if (outfile == -1)
 	{
 		//fd[1] = open(av[3], O_CREAT, S_IWUSR);
-		fd[1] = open(av[3], O_CREAT, S_IRWXU);
+		outfile= open(av[4], O_CREAT, S_IRWXU);
 
-		if (fd[1] == 1)
+		if (outfile == 1)
 		{
-			close(fd[1]);
+			close(outfile);
 			return (0);
 		}
 	}
@@ -116,7 +115,7 @@ int	main(int ac, char **av, char **envp)
 	pid = fork();
 	if (pid < 0)
 	{
-		printf("errorre\n");
+		printf("error\n");
 		return (0);
 	}
 	if (pid == 0)//child
@@ -124,7 +123,8 @@ int	main(int ac, char **av, char **envp)
 		dup2(fd[0], 0);
 		dup2(fd[1], 1);
 		close(fd[0]);
-		execve(valid_cmd_path, &cmd1, envp);
+		close(infile);
+		execve(valid_cmd_path, cmd1, envp);
 		printf("ca marche pas :(\n");
 	}
 	else//parent
@@ -132,7 +132,8 @@ int	main(int ac, char **av, char **envp)
 		dup2(fd[0], 0);
 		dup2(fd[1], 1);
 		close(fd[1]);
-		execve(valid_cmd_path, &cmd2, envp);
+		close(outfile);
+		execve(valid_cmd_path, cmd2, envp);
 		printf("ca marche pas :(\n");
 	}
 	//si execve reussi, ne revient pas ici, sinon il faut free
