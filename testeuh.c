@@ -1,52 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   testeuh.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/04 16:27:53 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/23 16:40:15 by malancar         ###   ########.fr       */
+/*   Created: 2023/06/23 15:31:43 by malancar          #+#    #+#             */
+/*   Updated: 2023/06/23 16:26:35 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
-
-
-/*int	fork_process(int *parent_pid)
-{
-	*parent_pid = fork();
-	if (*parent_pid == 0)//we are in the child process
-		child_process(fd[0], cmd)
-	else if (*parent_pid < 0)
-	{
-		printf("error\n");
-		return (-1);
-	}
-}*/
-
-/*void	close_fd()
-{
-	close(infile);
-	close(outfile);
-	//printf("fd = %d\n", infile);
-}*/
-
-/*
-int	child_process()
-{
-	
-}
-
-int	parent_process()
-{
-	
-}
-
-void	pipex()
-{
-	
-}*/
 
 int	main(int ac, char **av, char **envp)
 {
@@ -64,9 +28,8 @@ int	main(int ac, char **av, char **envp)
 	if (ac < 5)
 		return (0);
 	//printf("ici : %p\n", &valid_cmd_path);
-	check_command(av[2], envp, &cmd1, &valid_cmd_path);
-	check_command(av[3], envp, &cmd2, &valid_cmd_path2);
-	/*int		i;
+	//check_command(av[2], envp, &cmd, &valid_cmd_path);
+	int		i;
 	i = 0;
 	cmd1 = ft_split(av[2], ' ');
 	cmd2 = ft_split(av[3], ' ');
@@ -91,8 +54,8 @@ int	main(int ac, char **av, char **envp)
 		free_tab(cmd2);
 		printf("error");
 		return (1);
-	}*/
-	//fd = init_fd(av[1], av[3], fd[2]);
+	}
+	//fd = init_fd(av[1], av[3], infile, outfile);
 	infile = open(av[1], O_RDONLY);
 	if (infile == -1)
 	{
@@ -131,6 +94,8 @@ int	main(int ac, char **av, char **envp)
 		close(outfile);// close outfile bc write in pipe exit
 		execve(valid_cmd_path, cmd1, envp);
 		printf("execve marche pas :(\n");
+		//free
+		//exit
 	}
 	child2 = fork();
 	if (child2 < 0)
@@ -146,14 +111,17 @@ int	main(int ac, char **av, char **envp)
 		close(infile);//close sortie pipe bc write in outfile
 		close(fd[1]);//close infile bc read from pipe
 		execve(valid_cmd_path2, cmd2, envp);
+		//free
+		//exit
 		printf("execve marche pas :(\n");
 	}
-	//printf("coucouc ici\n");
-	close(fd[0]);
-	close(fd[1]);
-	close(infile);
-	close(outfile);
-	waitpid(child1, &status, 0);
-	waitpid(child2, &status, 0);
-
+	else//parent
+	{
+		close(fd[0]);
+		close(fd[1]);
+		close(infile);
+		close(outfile);
+		waitpid(child1, &status, 0);
+		waitpid(child2, &status, 0);
+	}
 }

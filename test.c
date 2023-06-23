@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/13 19:24:28 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/16 16:38:40 by malancar         ###   ########.fr       */
+/*   Updated: 2023/06/23 16:39:37 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,3 +61,15 @@ int main(int ac, char **av)
 	//close(outfile);
 
 }
+
+
+/*int j;
+	j = ac - 3;
+	int k;
+	k = 2
+	while (j > 0)
+	{
+		check_command(av[k], envp, &cmd, &valid_cmd_path);
+		j--;
+		k++;
+	}*/

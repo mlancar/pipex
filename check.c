@@ -6,20 +6,20 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:28:37 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/20 17:56:47 by malancar         ###   ########.fr       */
+/*   Updated: 2023/06/23 16:25:07 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-/*int	check_command(char av[2], char **envp, char ***cmd, char **valid_cmd_path)
+int	check_command(char *str, char **envp, char ***cmd, char **valid_cmd_path)
 {
 	int		i;
 
-	printf("&cmd : %p\n", cmd);
+	//printf("&cmd : %p\n", cmd);
 	//printf("ici : %p\n", valid_cmd_path);
 	i = 0;
-	*cmd = ft_split(&av[2], ' ');
+	*cmd = ft_split(str, ' ');
 	if (!*cmd)
 		return (1);
 	while (envp[i])
@@ -28,16 +28,17 @@
 			break ;
 		i++;
 	}
-	printf("&cmd la: %p\n", cmd);
-	if (check_access(, &envp[i][5], valid_cmd_path) == 0)
+	//printf("&cmd la: %p\n", cmd);
+	//printf("commande: %s\n", cmd[0][0]);
+	if (check_access((*cmd)[0], &envp[i][5], valid_cmd_path) == 0)
 	{
 		free_tab(*cmd);
-		printf("error ici\n");
+		printf("error check_command\n");
 		return (1);
 	}
 	return (1);
 }
-*/
+
 int	check_access(char *cmd, char *path, char **cmd_path)
 {
 	char	**split_path;

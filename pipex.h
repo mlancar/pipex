@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 19:47:18 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/20 16:29:37 by malancar         ###   ########.fr       */
+/*   Updated: 2023/06/23 14:37:35 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include <sys/types.h>
 # include <sys/stat.h>
 # include <fcntl.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 
 typedef struct s_pipex {
 
