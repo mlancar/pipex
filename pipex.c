@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:27:53 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/23 16:40:15 by malancar         ###   ########.fr       */
+/*   Updated: 2023/06/23 22:07:31 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,20 @@
 	//printf("fd = %d\n", infile);
 }*/
 
-/*
-int	child_process()
+
+int	child_process(pipe_t )
 {
-	
+	dup2(infile, 0);//read from infile not stdin
+	dup2(fd1[1], 1);//write in pipe exit not stdout
+	close(fd1[0]);// close entree pipe
+	close(outfile);// close outfile bc write in pipe exit
+	execve(valid_cmd_path, cmd1, envp);
+	printf("execve marche pas :(\n");
+	//free
+	//exit
 }
 
-int	parent_process()
+/*int	parent_process()
 {
 	
 }
@@ -50,9 +57,9 @@ void	pipex()
 
 int	main(int ac, char **av, char **envp)
 {
-	int		fd[2];
+	int		fd1[2];
+	int		fd2[2];
 	char	**cmd1;
-	char	**cmd2;
 	char	*valid_cmd_path;
 	char	*valid_cmd_path2;
 	int		child1;
@@ -60,39 +67,15 @@ int	main(int ac, char **av, char **envp)
 	int		infile;
 	int		outfile;
 	int		status;
+	int		nbr_args;
 
 	if (ac < 5)
 		return (0);
 	//printf("ici : %p\n", &valid_cmd_path);
-	check_command(av[2], envp, &cmd1, &valid_cmd_path);
-	check_command(av[3], envp, &cmd2, &valid_cmd_path2);
-	/*int		i;
-	i = 0;
-	cmd1 = ft_split(av[2], ' ');
-	cmd2 = ft_split(av[3], ' ');
-	if (!cmd1)
-		return (0);
-	if (!cmd2)
-		return (0);
-	while (envp[i])
-	{
-		if (strncmp(envp[i], "PATH", 4) == 0)
-			break ;
-		i++;
-	}
-	if (check_access(cmd1[0], &envp[i][5], &valid_cmd_path) == 0)
-	{
-		free_tab(cmd1);
-		printf("error");
-		return (1);
-	}
-	if (check_access(cmd2[0], &envp[i][5], &valid_cmd_path2) == 0)
-	{
-		free_tab(cmd2);
-		printf("error");
-		return (1);
-	}*/
+	//check_command(av[2], envp, &cmd1, &valid_cmd_path);
+	//check_command(av[3], envp, &cmd2, &valid_cmd_path2);
 	//fd = init_fd(av[1], av[3], fd[2]);
+	nbr_args = ac - 3;
 	infile = open(av[1], O_RDONLY);
 	if (infile == -1)
 	{
@@ -113,25 +96,34 @@ int	main(int ac, char **av, char **envp)
 	}
 	//printf("infile = %d\n", infile);
 	//printf("outfile = %d\n", outfile);
-	pipe(fd);
+	pipe1(fd1);
+	pipe2(fd2);
 	//printf("fd[0] = %d\n", fd[0]);
 	//printf("fd[1] = %d\n", fd[1]);
-	child1 = fork();
-	if (child1 < 0)
+	while (nbr_args > 0)
 	{
-		printf("error child1\n");
-		return (0);
+		child = fork();
+		if (child1 < 0)
+		{
+			printf("error child1\n");
+			return (0);
+		}
+		if (child == 0)
+		{
+			if (check_command(av[2], envp, &cmd1, &valid_cmd_path) == 0)
+			{
+				printf("error");
+				return (0);
+			}
+			child_process();
+		}
+		else//parent
+		{
+			
+		}
+		nbr_args--;
 	}
-	if (child1 == 0)//child // cmd2
-	{
-		//printf("coucou child1\n");
-		dup2(infile, 0);//read from infile not stdin
-		dup2(fd[1], 1);//write in pipe exit not stdout
-		close(fd[0]);// close entree pipe
-		close(outfile);// close outfile bc write in pipe exit
-		execve(valid_cmd_path, cmd1, envp);
-		printf("execve marche pas :(\n");
-	}
+	
 	child2 = fork();
 	if (child2 < 0)
 	{
@@ -149,8 +141,8 @@ int	main(int ac, char **av, char **envp)
 		printf("execve marche pas :(\n");
 	}
 	//printf("coucouc ici\n");
-	close(fd[0]);
-	close(fd[1]);
+	close(fd1[0]);
+	close(fd1[1]);
 	close(infile);
 	close(outfile);
 	waitpid(child1, &status, 0);
