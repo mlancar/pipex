@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   testeuh.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:31:43 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/23 22:00:29 by malancar         ###   ########.fr       */
+/*   Updated: 2023/06/24 22:16:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int	main(int ac, char **av, char **envp)
 
 	if (ac < 5)
 		return (0);
+	printf("last arg : %s\n", av[ac - 1]);
 	//printf("%d\n", ac - 3);
 	//printf("ici : %p\n", &valid_cmd_path);
 	//check_command(av[2], envp, &cmd, &valid_cmd_path);
