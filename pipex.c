@@ -3,164 +3,167 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:27:53 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/25 00:48:56 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/27 01:03:08 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-/*void	close_fd()
-{
-	close(infile);
-	close(outfile);
-	//printf("fd = %d\n", infile);
-}*/
-
-void	ft_error()
+int	ft_error(void)
 {
 	printf("error");
 	return (0);
 }
 
-void	child_process1(t_pipex pipex, char **envp)
+int	first_cmd(t_pipex *cmd, char **envp)
 {
-	
-	if (first_arg)
+	cmd->pid[cmd->index] = fork();
+	if (cmd->pid < 0)
+		ft_error();
+	if (cmd->pid == 0)
 	{
-		dup2(pipex.fd1[1], 1);//write in pipe exit not stdout
-		dup2(pipex.infile, 0);//read from infile not stdin
-		close(pipex.fd1[0]);// close entree pipe
-		close(pipex.outfile);// close outfile bc write in pipe exit
+		dup2(cmd->infile, 0);
+		dup2(cmd->fd[1], 1);
+		close(cmd->fd[0]);
+		execve(cmd->path, cmd->name, envp);
+		printf("execve marche pas :(\n");
+		//free
 	}
-	dup2(pipex.fd1[0]);
-	close(pipex.fd1[1]);
-	else if (last arg)
+	return (0);
+}
+
+int	last_cmd(t_pipex *cmd, char **envp)
+{
+	cmd->pid[cmd->index] = fork();
+	if (cmd->pid < 0)
+		ft_error();
+	if (cmd->pid == 0)
 	{
-		dup2(pipex.outfile);
-		close(pipex.fd2[1]);
+		dup2(cmd->fd[0], 0);
+		dup2(cmd->outfile, 1);
+		close(cmd->fd[1]);
+		execve(cmd->path, cmd->name, envp);
+		printf("execve marche pas :(\n");
+		//free
+	}
+	return (0);
+}
+
+int	middle_cmd(t_pipex *cmd, char **envp)
+{
+	cmd->pid[cmd->index] = fork();
+	if (cmd->pid < 0)
+		ft_error();
+	if (cmd->pid == 0)
+	{
+		dup2(cmd->previous_fd, 0);
+		dup2(cmd->fd[1], 1);
+		close(cmd->fd[0]);
+		execve(cmd->path, cmd->name, envp);
+		printf("execve marche pas :(\n");
+		//free
+		//exit
+	}
+	return(0);
+}
+
+
+
+int	pipex(char *arg, t_pipex *cmd,char **envp)
+{
+	if (cmd->index == cmd->first)
+	{
+		open_infile(cmd, arg);
+		pipe(cmd->fd);
+		if (first_cmd(cmd, envp) == 0)
+			return (0);
+		close(cmd->infile);
+		dprintf(2, "coucouc first cmd");
+	}
+	else if (cmd->index == cmd->last)
+	{
+		open_outfile(cmd, arg);
+		if (last_cmd(cmd, envp) == 0)
+			return (0);
+		close(cmd->fd[0]);
+		close(cmd->outfile);
+		dprintf(2, "coucou last cmd");
 	}
 	else
 	{
-		dup2(pipex.fd2[1]);//write in pipe2 exit
-		close(pipex.fd2[0]);
+		cmd->previous_fd = cmd->fd[0];
+		close(cmd->fd[1]);
+		pipe(cmd->fd);
+		if (middle_cmd(cmd, envp) == 0)
+			return (0);
+		close(cmd->previous_fd);
+		dprintf(2, "coucou middle cmd");
 	}
-	execve(pipex.valid_cmd_path, pipex.cmd1, envp);
-	printf("execve marche pas :(\n");
-	//free
-	exit ;
+	return (1);
 }
 
-void	child_process2(t_pipex pipex)
+int	open_infile(t_pipex *cmd, char *first_arg)
 {
-	dup2(pipex.fd1[0]);//read from first pipe entree
-	close(pipex.fd1[1]);
-	if(last arg)
+	cmd->infile = open(first_arg, O_RDONLY);
+	if (cmd->infile == -1)
 	{
-		dup2(pipex.outfile);//write in pipe2 exit
-		close(pipex.fd2[1]);
-	}
-	else
-	{
-		dup2(pipex.fd2[1]);//write in pipe2 exit
-		close(pipex.fd2[0]);
-	}
-	execve(pipex.valid_cmd_path, pipex.cmd1, envp);
-	printf("execve marche pas :(\n");
-	//free
-	exit ;
-}
-
-
-
-void	fork1(t_pipex pipex)
-{
-	pipex.child1 = fork();
-	if (pipex.child1 < 0)
-		ft_error();
-	if (child == 0)
-	{
-		if (check_command(av[2], envp, &cmd1, &valid_cmd_path) == 0)
-			ft_error();
-		child_process1(&pipex);
-	}
-}
-
-void	fork2(t_pipex pipex)
-{
-	child2 = fork();
-	if (child2 < 0)
-		ft_error();
-	else if (pipex.child2 == 0)
-	{
-		if (check_command(av[2], envp, &cmd1, &valid_cmd_path) == 0)
-			ft_error();
-		child_process2(&pipex);
-	}
-}
-
-int	parent_process()
-{
-	close(pipex.fd1[0]);
-	close(pipex.fd1[1]);
-	close(pipex.infile);
-	close(pipex.outfile);
-	waitpid(pipex.child1, &status, 0);
-	waitpid(pipex.child2, &status, 0);
-}
-void	pipexe(t_pipex pipex)
-{
-	int	pipe1;
-	int	pipe2;
-	int		nbr_args;
-	
-	nbr_args = ac - 3;
-	pipe1(pipex.fd1);//if arg > 1
-	pipe2(pipex.fd2);// if arg > 2
-	while (nbr_args > 0)
-	{
-		if ((cmd1==av[2]) % 2 == 0)//paire//first cmd always paire
-			fork1(&pipex);
-		else if(cmd_nbr % 2 == 1)//impaire
-			fork2(&pipex);
-		else//parent	
-			parent_process(&pipex);//printf("coucouc ici\n");
-		nbr_args--;
-	}
-}
-
-void	open_files(t_pipex pipex, char *first_arg, char *last_arg)
-{
-	piex.infile = open(first_arg, O_RDONLY);
-	if (pipex.infile == -1)
-	{
-		close(pipex.infile);
+		dprintf(2, "coucou infile");
 		return (0);
 	}
-	pipex.outfile = open(last_arg, O_WRONLY);
-	if (pipex.outfile == -1)
-	{
-		//piepx.outfile = open(av[3], O_CREAT, S_IWUSR);
-		pipex.outfile = open(last_arg, O_CREAT, S_IRWXU);
+	return (1);
+}
 
-		if (pipex.outfile == 1)
+int	open_outfile(t_pipex *cmd, char *last_arg)
+{
+	cmd->outfile = open(last_arg, O_WRONLY);
+	if (cmd->outfile == -1)
+	{
+		//pipex.outfile = open(av[3], O_CREAT, S_IWUSR);
+		cmd->outfile = open(last_arg, O_CREAT, S_IRWXU);
+		dprintf(2, "outfile = %d\n", cmd->outfile);
+		if (cmd->outfile == 1)
 		{
-			close(pipex.outfile);
+			close(cmd->outfile);
 			return (0);
 		}
 	}
+	return (1);
 }
 
 int	main(int ac, char **av, char **envp)
 {
-	t_pipe	pipex;
+	t_pipex	cmd;
 	int		status;
+	int		i;
 
-	if (ac < 5)
+	if (ac > 5)
 		return (0);
-	open_files(&pipex, av[1], av[ac -1]);
-	pipexe(&pipex);
-	
+	cmd.nbr = ac - 3;
+	cmd.index = cmd.nbr;
+	cmd.first = cmd.nbr;
+	cmd.last = 1;
+	i = 2;
+	cmd.pid = malloc(sizeof(int) * cmd.nbr);
+	if (!cmd.pid)
+		return (printf("pid error"), 0);
+	while (cmd.index > 0)
+	{
+		dprintf(2, "cmd = %s\n", av[i]);
+		dprintf(2, "cmd.nbr = %d\n", cmd.nbr);
+		dprintf(2, "cmd.index = %d\n", cmd.index);
+		dprintf(2, "i = %d\n", i);
+		pipex(av[i], &cmd, envp);
+		i++;
+		cmd.index--;
+	}
+	//dprintf(2, "i = %d\n", i);
+	int j = i - 1;
+	while (j > 0)
+	{
+		waitpid(cmd.pid[j], &status, 0);
+		j--;
+	}
 }

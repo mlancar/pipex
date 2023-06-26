@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 19:47:18 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/24 22:10:55 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/27 00:23:03 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,21 +25,32 @@
 # include <sys/wait.h>
 
 typedef struct s_pipex {
-    int infile;
-    int outfile;
-    int fd1[2];
-    int fd2[2];
-    char *valid_cmd_path;
-    char **cmd;
-    int child1;
-    int child2;
+    int     infile;
+    int     outfile;
+    char    *path;
+    char    **name;
+   // int     child;
+    int     fd[2];
+    int     previous_fd;
+    int     *pid;
+    int     nbr;
+    int     first;
+    int     last;
+    int     index;
 }	t_pipex;
 
-int     check_command(char av[2], char **envp, char ***cmd, char **valid_cmd_path);
-int		check_access(char *cmd, char *path, char **cmd_path);
-int		init_fd(char *infile, char *outfile, int fd[2]);
+
+int     check_command(char *str, char **envp, t_pipex *cmd);
+int		check_access(t_pipex *cmd, char *path);
+int		init_fd(char *infile, char *outfile);
 char	**ft_split(char *str, char c);
 char	*ft_strjoin(char *s1, char *s2, char c);
 void	free_tab(char **tab);
+int     pipex(char *arg, t_pipex *cmd,char **envp);
+int     first_cmd(t_pipex *cmd, char **envp);
+int     middle_cmd(t_pipex *cmd, char **envp);
+int     last_cmd(t_pipex *cmd, char **envp);
+int     open_infile(t_pipex *cmd, char *first_arg);
+int     open_outfile(t_pipex *cmd, char *last_arg);
 
 #endif
