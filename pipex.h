@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 19:47:18 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/27 00:23:03 by malancar         ###   ########.fr       */
+/*   Updated: 2023/06/27 16:09:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ int		init_fd(char *infile, char *outfile);
 char	**ft_split(char *str, char c);
 char	*ft_strjoin(char *s1, char *s2, char c);
 void	free_tab(char **tab);
-int     pipex(char *arg, t_pipex *cmd,char **envp);
+int     pipex(char *first_arg, char *last_arg, t_pipex *cmd,char **envp);
 int     first_cmd(t_pipex *cmd, char **envp);
 int     middle_cmd(t_pipex *cmd, char **envp);
 int     last_cmd(t_pipex *cmd, char **envp);

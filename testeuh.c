@@ -6,11 +6,36 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 15:31:43 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/24 22:16:22 by marvin           ###   ########.fr       */
+/*   Updated: 2023/06/27 13:46:44 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	check_accesse(char *cmd, char *path, char **cmd_path)
+{
+	char	**split_path;
+	int		i;
+	//printf("ici : %p\n", cmd_path);
+	//printf("&cmd ici: %p\n", cmd);
+	i = 0;
+	split_path = ft_split(path, ':');
+	if (!split_path)
+		return (0);
+	while (split_path[i])
+	{
+		*cmd_path = ft_strjoin(split_path[i], cmd, '/');
+		//printf("cmd_path = %s\n", *cmd_path);
+		if (access(*cmd_path, F_OK) == 0)
+			return (1);
+		free(*cmd_path);
+		i++;
+	}
+	*cmd_path = strdup(cmd);
+	if (access(*cmd_path, F_OK) == 0)
+		return (1);
+	return (1);
+}
 
 int	main(int ac, char **av, char **envp)
 {
@@ -27,7 +52,7 @@ int	main(int ac, char **av, char **envp)
 
 	if (ac < 5)
 		return (0);
-	printf("last arg : %s\n", av[ac - 1]);
+	//printf("last arg : %s\n", av[ac - 1]);
 	//printf("%d\n", ac - 3);
 	//printf("ici : %p\n", &valid_cmd_path);
 	//check_command(av[2], envp, &cmd, &valid_cmd_path);
@@ -45,13 +70,13 @@ int	main(int ac, char **av, char **envp)
 			break ;
 		i++;
 	}
-	if (check_access(cmd1[0], &envp[i][5], &valid_cmd_path) == 0)
+	if (check_accesse(cmd1[0], &envp[i][5], &valid_cmd_path) == 0)
 	{
 		free_tab(cmd1);
 		printf("error");
 		return (1);
 	}
-	if (check_access(cmd2[0], &envp[i][5], &valid_cmd_path2) == 0)
+	if (check_accesse(cmd2[0], &envp[i][5], &valid_cmd_path2) == 0)
 	{
 		free_tab(cmd2);
 		printf("error");
@@ -94,8 +119,10 @@ int	main(int ac, char **av, char **envp)
 		dup2(fd[1], 1);//write in pipe exit not stdout
 		close(fd[0]);// close entree pipe
 		close(outfile);// close outfile bc write in pipe exit
+		//dprintf(2, "valid cmd path = %s\n, cmd = %s\n", valid_cmd_path, cmd1);
 		execve(valid_cmd_path, cmd1, envp);
-		printf("execve marche pas :(\n");
+		dprintf(2, "execve marche pas :(\n");
+		return (0);
 		//free
 		//exit
 	}
@@ -116,6 +143,7 @@ int	main(int ac, char **av, char **envp)
 		//free
 		//exit
 		printf("execve marche pas :(\n");
+		return (0);
 	}
 	else//parent
 	{
@@ -126,4 +154,5 @@ int	main(int ac, char **av, char **envp)
 		waitpid(child1, &status, 0);
 		waitpid(child2, &status, 0);
 	}
+	return (0);
 }
