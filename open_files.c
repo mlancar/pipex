@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 12:13:28 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/29 13:24:53 by malancar         ###   ########.fr       */
+/*   Updated: 2023/06/30 20:47:50 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,24 +14,9 @@
 
 int	open_infile(t_pipex *cmd, char *first_arg)
 {
-	//if on peut pas lire depuis infile
-	// la premiere cmd s'execute pas 
-	//mais le reste oui
-	//dprintf(2, "first_arg = %s\n", first_arg);
 	cmd->infile = open(first_arg, O_RDONLY);
 	if (cmd->infile == -1)
-	{
-		//perror("infile does not exist\n");
-		perror(NULL);
-		strerror();
-		//write(2, "infile doest not exist\n", 23);
-	}
-	//dprintf(2, "infile = %d\n", cmd->infile);
-	/*if (cmd->infile == -1)
-	{
-		dprintf(2, "coucou infile\n");
-		return (0);
-	}*/
+		perror("open");
 	return (1);
 }
 

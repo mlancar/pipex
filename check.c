@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:28:37 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/27 00:06:16 by malancar         ###   ########.fr       */
+/*   Updated: 2023/06/30 18:12:26 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ int	check_command(char *str, char **envp, t_pipex *cmd)
 	if (check_access(cmd, &envp[i][5]) == 0)
 	{
 		free_tab(cmd->name);
-		printf("error check_command\n");
 		return (0);
 	}
 	return (1);

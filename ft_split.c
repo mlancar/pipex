@@ -6,24 +6,13 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 17:07:59 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/12 18:15:23 by malancar         ###   ########.fr       */
+/*   Updated: 2023/06/30 21:25:31 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
-
-void	free_tab(char **tab)
-{
-	int	i;
-
-	i = 0;
-	while (tab[i])
-	{
-		free(tab[i]);
-		i++;
-	}
-}
+# include "pipex.h"
 
 int	len_word(char *str, char c)
 {
