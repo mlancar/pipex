@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:27:53 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/30 21:27:44 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/02 02:49:38 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,11 +80,14 @@ int	last_cmd(t_pipex *cmd, char **envp)
 		}
 		else
 			perror("dup2");
+		//dprintf(2, "coucou\n");
 		free_tab(cmd->name);
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
+		dprintf(2, "adress cmd index = %p\n", &cmd->index);
+		
 		close(cmd->fd[0]);
 		close(cmd->outfile);
 	}
@@ -134,14 +137,18 @@ int	main(int ac, char **av, char **envp)
 	cmd.first = 1;
 	cmd.last = cmd.max;
 	i = 2;
+	//cmd.pid = NULL;
 	cmd.pid = malloc(sizeof(int) * cmd.max);
 	if (!cmd.pid)
 		return (printf("pid error"), 0);
 	pipex(&cmd, av, envp);
+	free_tab(cmd.name);
+	free(cmd.path);
 	i = i - 2;
 	while (i > 0)
 	{	
 		waitpid(cmd.pid[i], NULL, 0);
 		i--;
 	}
+	//free(waitpid);
 }

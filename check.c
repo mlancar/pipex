@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:28:37 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/30 18:12:26 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/01 19:41:13 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,9 +49,12 @@ int	check_access(t_pipex *cmd, char *path)
 		if (access(cmd->path, F_OK) == 0)
 			return (1);
 		free(cmd->path);
+		
 		i++;
 	}
+	
 	cmd->path = strdup(*(cmd->name));//ft_strdup
+	free_tab(split_path);
 	if (access(cmd->path, F_OK) == 0)
 		return (1);
 	return (0);

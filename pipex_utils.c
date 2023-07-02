@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:27:38 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/30 21:29:35 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/02 02:35:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,8 @@ int	ft_strlen(char *str)
 
 void	ft_putstr_fd(char *str, int fd)
 {
-	int	i;
 	int	len;
 
-	i = 0;
 	len = ft_strlen(str);
 	write(fd, str, len);
 }
