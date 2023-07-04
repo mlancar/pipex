@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:27:38 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/02 02:35:14 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/04 23:01:47 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,4 +62,23 @@ char	*ft_strjoin(char *s1, char *s2, char c)
 	s3[i + 1] = '\0';
 	ft_strcat(s3, s2);
 	return (s3);
+}
+
+char	*ft_strdup(char *s1)
+{
+	char	*s2;
+	int		i;
+	
+   
+    if (!s1)
+        return (NULL);
+    i = 0;
+	s2 = malloc(sizeof(char) * (ft_strlen(s1) + 1));
+	while (s1[i])
+	{
+		s2[i] = s1[i];
+		i++;
+	}
+	s2[i] = '\0';
+	return (s2);
 }
