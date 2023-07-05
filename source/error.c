@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 21:28:45 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/02 19:01:07 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/05 14:57:32 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,28 +25,11 @@ void free_tab(char **tab)
 	free(tab);
 }
 
-void error_pipe(t_pipex *cmd)
+void free_and_exit(char *str, t_pipex *cmd)
 {
 	free_tab(cmd->name);
 	free(cmd->path);
 	free(cmd->pid);
-	perror("pipe");
-	exit(EXIT_FAILURE);
-}
-
-void error_cmd(t_pipex *cmd)
-{
-	free_tab(cmd->name);
-	free(cmd->path);
-	free(cmd->pid);
-	perror("command fail");
-	exit(EXIT_FAILURE);
-}
-
-void free_everything(t_pipex *cmd)
-{
-	free_tab(cmd->name);
-	free(cmd->path);
-	free(cmd->pid);
+	perror(str);
 	exit(EXIT_FAILURE);
 }

@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:27:53 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/02 19:01:27 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/05 17:45:12 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,10 @@ int	first_cmd(t_pipex *cmd, char **envp)
 		{
 			close(cmd->fd[0]);
 			if (execve(cmd->path, cmd->name, envp))
-				perror("execve");
+				free_and_exit("execve", cmd);
 		}
 		else
-			perror("dup2");
-		free_everything(cmd);
+			free_and_exit("dup2", cmd);
 	}
 	else
 	{
@@ -48,11 +47,10 @@ int	middle_cmd(t_pipex *cmd, char **envp)
 		{
 			close(cmd->fd[0]);
 			if (execve(cmd->path, cmd->name, envp))
-				perror("execve");
+				free_and_exit("execve", cmd);
 		}
 		else
-			perror("dup2");
-		free_everything(cmd);
+			free_and_exit("dup2", cmd);
 	}
 	else
 	{
@@ -72,11 +70,10 @@ int	last_cmd(t_pipex *cmd, char **envp)
 		if ((dup2(cmd->fd[0], 0) != -1) && (dup2(cmd->outfile, 1) != -1))
 		{
 			if (execve(cmd->path, cmd->name, envp))
-				perror("execve");
+				free_and_exit("execve", cmd);
 		}
 		else
-			perror("dup2");
-		free_everything(cmd);
+			free_and_exit("dup2", cmd);
 	}
 	else
 	{	
@@ -92,23 +89,24 @@ void	pipex(t_pipex *cmd, char **av, char **envp)
 
 	i = 2;
 	if (pipe(cmd->fd) == -1)
-		error_pipe(cmd);
+		free_and_exit("pipe", cmd);
 	while (cmd->index <= cmd->max)
 	{
 		if (check_command(av[i], envp, cmd) == 0)
 			write(2, "command not found\n", 18);
-		else if ((cmd->index == cmd->first) && (first_cmd(cmd, envp) == 0))
-			error_cmd(cmd);
-		else if ((cmd->index == cmd->last) && (last_cmd(cmd, envp) == 0))
-			error_cmd(cmd);
-		else
+		else if ((cmd->index == cmd->first) && (first_cmd(cmd, envp) != 1))
+			free_and_exit("command fail", cmd);
+		else if ((cmd->index == cmd->last) && (last_cmd(cmd, envp) != 1))
+			free_and_exit("command fail", cmd);
+		else if ((cmd->index != cmd->first) && (cmd->index != cmd->last))
 		{
+			dprintf(2, "coucou ici\n");
 			cmd->previous_fd = cmd->fd[0];
 			pipe(cmd->fd);
 			if (pipe(cmd->fd) == -1)
-				error_pipe(cmd);
+				free_and_exit("pipe", cmd);
 			if (middle_cmd(cmd, envp) == 0)
-				error_cmd(cmd);
+				free_and_exit("command fail\n", cmd);
 		}
 		i++;
 		cmd->index++;
@@ -125,6 +123,8 @@ int	main(int ac, char **av, char **envp)
 
 	if (ac < 5)
 		return (0);
+	//if (check_here_doc() == 1);
+	//	here_doc();
 	open_infile(&cmd, av[1]);
 	open_outfile(&cmd, av[ac - 1]);
 	cmd.max = ac - 3;
@@ -132,7 +132,6 @@ int	main(int ac, char **av, char **envp)
 	cmd.first = 1;
 	cmd.last = cmd.max;
 	i = 0;
-	//cmd.pid = NULL;
 	cmd.pid = malloc(sizeof(pid_t) * cmd.max);
 	if (!cmd.pid)
 		return (printf("pid error"), 0);
@@ -143,13 +142,4 @@ int	main(int ac, char **av, char **envp)
 		i--;
 	}
 	free(cmd.pid);
-	/*dprintf(2, "%d\n", WIFEXITED(status));
-	if ( WIFEXITED(status) )
-    {
-		dprintf(2, "cc");
-        int exit_status = WEXITSTATUS(status);       
-        dprintf(2, "Exit status of the child was %d\n", exit_status);
-	}*/
-	//return (status);
-	//return valeur du dernier pid == derniere cmd lance
 }

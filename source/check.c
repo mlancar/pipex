@@ -6,11 +6,19 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:28:37 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/02 19:31:54 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/05 17:10:30 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+/*int	check_here_doc(char *str)
+{
+	if (ft_strcmp("here_doc", str) == 1)
+	{
+		
+	}
+}*/
 
 int	check_command(char *str, char **envp, t_pipex *cmd)
 {
@@ -27,10 +35,7 @@ int	check_command(char *str, char **envp, t_pipex *cmd)
 		i++;
 	}
 	if (check_access(cmd, &envp[i][5]) == 0)
-	{
-		free_tab(cmd->name);
 		return (0);
-	}
 	return (1);
 }
 
@@ -56,7 +61,7 @@ int	check_access(t_pipex *cmd, char *path)
 		i++;
 	}
 	free_tab(split_path);
-	cmd->path = strdup(*(cmd->name));//ft_strdup
+	cmd->path = ft_strdup(*(cmd->name));
 	if (access(cmd->path, F_OK) == 0)
 		return (1);
 	return (0);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:27:38 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/04 23:01:47 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/05 16:19:23 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,14 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-void	ft_putstr_fd(char *str, int fd)
+int		ft_strcmp(char *s1, char *s2)
 {
-	int	len;
+	int	i;
 
-	len = ft_strlen(str);
-	write(fd, str, len);
+	i = 0;
+	while ((s1[i] == s2[i]) && (s1[i] && s2[i]))
+		i++;
+	return (s1[i] - s2[i]);
 }
 
 char	*ft_strcat(char *dest, char *src)
