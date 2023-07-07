@@ -6,11 +6,33 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 12:13:28 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/30 20:47:50 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/07 14:16:44 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	here_doc(t_pipex *cmd, )
+{
+	t_pipex	here_doc;
+	int		read_line;
+
+	if (pipe(cmd->fd) == 0)
+		free_and_exit("pipe", cmd);
+	here_doc.pid= fork();
+	if (here_doc.pid < 0)
+		free_and_exit("fork", cmd);
+	else if (here_doc.pid == 0)
+	{
+		read_line = get_next_line(0);
+		
+	}
+	else
+	{
+		
+	}
+	
+}
 
 int	open_infile(t_pipex *cmd, char *first_arg)
 {

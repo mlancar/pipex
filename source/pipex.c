@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:27:53 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/05 17:45:12 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/07 14:03:09 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	first_cmd(t_pipex *cmd, char **envp)
 {
 	cmd->pid[cmd->index - 1] = fork();
 	if (cmd->pid[cmd->index - 1] < 0)
-		return (dprintf(2, "pid error first cmd\n"), 0);//freepid
+		free_and_exit("fork", cmd);
 	if (cmd->pid[cmd->index - 1] == 0)
 	{
 		if ((dup2(cmd->infile, 0) != -1) && (dup2(cmd->fd[1], 1) != -1))
@@ -30,6 +30,7 @@ int	first_cmd(t_pipex *cmd, char **envp)
 	}
 	else
 	{
+		dprintf(2, "coucou ici\n");
 		close(cmd->fd[1]);
 		close(cmd->infile);
 	}
@@ -40,7 +41,7 @@ int	middle_cmd(t_pipex *cmd, char **envp)
 {
 	cmd->pid[cmd->index - 1] = fork();
 	if (cmd->pid[cmd->index - 1] < 0)
-		return (dprintf(2, "pid error first cmd\n"), 0);//free pid
+		free_and_exit("fork", cmd);
 	if (cmd->pid[cmd->index - 1] == 0)
 	{
 		if ((dup2(cmd->previous_fd, 0) != -1) && (dup2(cmd->fd[1], 1) != -1))
@@ -64,7 +65,7 @@ int	last_cmd(t_pipex *cmd, char **envp)
 {
 	cmd->pid[cmd->index - 1] = fork();
 	if (cmd->pid[cmd->index - 1] < 0)
-		return (dprintf(2, "pid error first cmd\n"), 0);
+		free_and_exit("fork", cmd);
 	if (cmd->pid[cmd->index - 1] == 0)
 	{
 		if ((dup2(cmd->fd[0], 0) != -1) && (dup2(cmd->outfile, 1) != -1))
@@ -100,9 +101,7 @@ void	pipex(t_pipex *cmd, char **av, char **envp)
 			free_and_exit("command fail", cmd);
 		else if ((cmd->index != cmd->first) && (cmd->index != cmd->last))
 		{
-			dprintf(2, "coucou ici\n");
 			cmd->previous_fd = cmd->fd[0];
-			pipe(cmd->fd);
 			if (pipe(cmd->fd) == -1)
 				free_and_exit("pipe", cmd);
 			if (middle_cmd(cmd, envp) == 0)
@@ -121,20 +120,27 @@ int	main(int ac, char **av, char **envp)
 	int		i;
 	int		status;
 
-	if (ac < 5)
-		return (0);
-	//if (check_here_doc() == 1);
-	//	here_doc();
-	open_infile(&cmd, av[1]);
-	open_outfile(&cmd, av[ac - 1]);
-	cmd.max = ac - 3;
+	
+	if (check_here_doc(av[1], ac) == 1)
+	{
+		here_doc();
+		open_outfile();
+	}
+	else
+	{
+		if (ac < 5)
+			return (0);
+		open_infile(&cmd, av[1]);
+		open_outfile(&cmd, av[ac - 1]);
+	}
+	cmd.max = ac - 3;//init cmd start
 	cmd.index = 1;
 	cmd.first = 1;
 	cmd.last = cmd.max;
 	i = 0;
 	cmd.pid = malloc(sizeof(pid_t) * cmd.max);
 	if (!cmd.pid)
-		return (printf("pid error"), 0);
+		return (printf("pid error"), 0);//init cmd end
 	pipex(&cmd, av, envp);
 	while (i > 0)
 	{	
