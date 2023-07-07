@@ -6,16 +6,17 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:28:37 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/07 13:52:52 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/07 19:54:03 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	check_here_doc(char *str, int ac)
+int	check_here_doc(t_pipex *cmd, char *first_arg, int ac)
 {
-	if ((ft_strcmp("here_doc", str) == 1) && (ac >= 6))
+	if ((ft_strcmp("here_doc", first_arg) == 1) && (ac >= 6))
 		return (1);
+	return (0);
 }
 
 int	check_command(char *str, char **envp, t_pipex *cmd)

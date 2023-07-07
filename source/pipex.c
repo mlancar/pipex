@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:27:53 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/07 14:03:09 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/07 19:54:40 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,6 @@ int	first_cmd(t_pipex *cmd, char **envp)
 	}
 	else
 	{
-		dprintf(2, "coucou ici\n");
 		close(cmd->fd[1]);
 		close(cmd->infile);
 	}
@@ -95,6 +94,11 @@ void	pipex(t_pipex *cmd, char **av, char **envp)
 	{
 		if (check_command(av[i], envp, cmd) == 0)
 			write(2, "command not found\n", 18);
+		else if ((cmd->index == cmd->first) && (check_here_doc(cmd, av[1], ) == 1) 
+					&& (here_doc(av[2], cmd, envp) != 1))
+					{
+						free_and_exit("command fail", cmd);
+					}
 		else if ((cmd->index == cmd->first) && (first_cmd(cmd, envp) != 1))
 			free_and_exit("command fail", cmd);
 		else if ((cmd->index == cmd->last) && (last_cmd(cmd, envp) != 1))
@@ -121,10 +125,11 @@ int	main(int ac, char **av, char **envp)
 	int		status;
 
 	
-	if (check_here_doc(av[1], ac) == 1)
+	if (check_here_doc(&cmd, av[1], ac) == 1)
 	{
-		here_doc();
-		open_outfile();
+		
+		open_here_doc(&cmd, av[1]);
+		open_outfile(&cmd, av[ac - 1]);
 	}
 	else
 	{
