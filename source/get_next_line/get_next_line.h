@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 19:31:21 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/07 19:32:11 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/08 16:11:48 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,9 @@
 # include <unistd.h>
 
 char	*get_next_line(int fd);
-char	*ft_strjoin(char *s1, char *s2);
+char	*join(char *s1, char *s2);
 char	*ft_substr(char *s, int start, int len);
-char	*ft_strdup(char **s);
+char	*dup_line(char **s);
 char	*ft_memmove(char *dest, char *src, int n);
 char	*ft_checkn(char **save, int n);
 void	ft_check(char **save, char *buf);

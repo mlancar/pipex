@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 12:51:40 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/07 19:32:04 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/08 18:04:41 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,10 @@ char	*ft_memmove(char *dest, char *src, int n)
 	return (dest);
 }
 
-void	ft_check(char **save, char *buf)
+void	check_save(char **save, char *buf)
 {
 	if (*save)
-			*save = ft_strjoin(*save, buf);
+			*save = join(*save, buf);
 	if (!*save)
 		*save = buf;
 }
@@ -87,33 +87,7 @@ char	*get_next_line(int fd)
 		check_read(buf, r);
 		check_save(&save, buf);
 		if ((r <= 0 || r < BUFFER_SIZE) && ft_strchr(save, '\n') == -1)
-			return (ft_strdup(&save));
+			return (dup_line(&save));
 	}
 	return (NULL);
-}
-
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-#include <fcntl.h>
-
-
-int		main()
-{
-	int	fd;
-	char *line;
-	
-	fd = open("bible.txt", O_RDONLY);
-	
-	//int i = 0;
-	while ((line = get_next_line(fd)) != NULL)
-	{
-		printf("%s", line);
-		free(line);
-		//i++;
-		//printf("%d\n", i);
-	}
-	return (0);
 }

@@ -6,21 +6,11 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/05 14:40:22 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/07 19:32:06 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/08 16:14:51 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-
-int	ft_strlen(char *str)
-{
-	int	i;
-
-	i = 0;
-	while (str[i])
-		i++;
-	return (i);
-}
 
 int	ft_strchr(char *str, char c)
 {
@@ -36,7 +26,7 @@ int	ft_strchr(char *str, char c)
 	return (-1);
 }
 
-char	*ft_strjoin(char *s1, char *s2)
+char	*join(char *s1, char *s2)
 {
 	int		i;
 	int		j;
@@ -89,7 +79,7 @@ char	*ft_substr(char	*s, int start, int len)
 	return (s2);
 }
 
-char	*ft_strdup(char **s)
+char	*dup_line(char **s)
 {
 	char	*s1;
 	int		i;
