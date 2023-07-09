@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:27:38 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/08 20:24:15 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/09 17:08:19 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,12 @@ void	ft_putstr_fd(char *str, int fd)
 	int	len;
 
 	len = ft_strlen(str);
-	write(fd, str, len);
+	//dprintf(2, "fd = %d\n", fd);
+	if (write(fd, str, len) == -1)
+	{
+		perror("write");
+		dprintf(2, "%d\n", errno);
+	}
 }
 
 int		ft_strncmp(char *s1, char *s2, int n)

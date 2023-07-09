@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 12:13:28 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/08 17:51:27 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/09 17:43:02 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,18 +24,11 @@ int	open_infile(t_pipex *cmd, char *first_arg)
 
 int	open_outfile(t_pipex *cmd, char *last_arg)
 {
-	cmd->outfile = open(last_arg, O_WRONLY);
+	cmd->outfile = open(last_arg, O_WRONLY | O_CREAT, S_IRWXU);
 	if (cmd->outfile == -1)
 	{
-		//pipex.outfile = open(av[3], O_CREAT, S_IWUSR);
-		cmd->outfile = open(last_arg, O_CREAT, S_IRWXU);
-		if ( cmd->outfile == -1)
-			return (dprintf(2, "outfile create error\n"), 0);
-		if (cmd->outfile == 1)
-		{
-			close(cmd->outfile);
-			return (0);
-		}
+		perror("open");
+		
 	}
 	return (1);
 }
