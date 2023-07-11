@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:27:38 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/09 17:08:19 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/11 17:17:32 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,14 +35,14 @@ void	ft_putstr_fd(char *str, int fd)
 	}
 }
 
-int		ft_strncmp(char *s1, char *s2, int n)
+int		ft_strcmp(char *s1, char *s2)
 {
 	int	i;
 
 	i = 0;
 	if (!s1 || !s2)
 		return (-1);
-	while ((s1[i] && s2[i]) && (s1[i] == s2[i]) && i < n - 1)
+	while ((s1[i] && s2[i]) && (s1[i] == s2[i]))
 		i++;
 	return (s1[i] - s2[i]);
 }

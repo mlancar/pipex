@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:27:53 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/09 23:39:25 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/11 19:08:17 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ int	child(int fd_in, int fd_out, int fd_other, t_pipex *cmd, char **envp)
 				close(fd_other);
 			if (execve(cmd->path, cmd->name, envp))
 				free_and_exit("execve", cmd);
-		}
+		} 
 		else
 			free_and_exit("dup2", cmd);
 	}
@@ -44,33 +44,27 @@ int	here_doc(char *limiter, t_pipex *cmd, char **envp)
 	//char	file_name[7];
 	int	fd;
 
-
 	len_limiter = ft_strlen(limiter);
 	read_line = NULL;
-	/*fd = open("/dev/random", O_RDONLY);//proteger
+	fd = 0;
+	//fd = open_tmp_file(fd);
+	fd = open("./tmp", O_WRONLY | O_TRUNC | O_CREAT, S_IRWXU);
 	if (fd == -1)
-		perror("open");
-	if (read(fd, file_name, 7) == -1)
-	{
-		perror("read");
-		
-	}//close
-	close(fd);
-	*/
-	fd = open("./tmp", O_WRONLY | O_CREAT, S_IWUSR);
-	if (fd == -1)
-		perror("open");
+		free_and_exit("open", cmd);
 	read_line = get_next_line(0);
-	ft_putstr_fd(read_line, fd);
-	while (ft_strncmp(limiter, read_line, len_limiter) != 0)
+	// if (check_limiter(read_line, limiter) != 0)
+	// 	ft_putstr_fd(read_line, fd);
+	while (check_limiter(read_line, limiter) != 0)
 	{
 		read_line = get_next_line(0);
-		ft_putstr_fd(read_line, fd);
-		
+		if (check_limiter(read_line, limiter) != 0)
+			ft_putstr_fd(read_line, fd);
 	}
 	free(read_line);
 	close(fd);
 	fd = open("./tmp", O_RDONLY);
+	if (fd == -1)
+		free_and_exit("open", cmd);
 	if (child(fd, cmd->fd[1], cmd->fd[0], cmd, envp) != 1)
 		free_and_exit("command fail", cmd);
 	return (1);

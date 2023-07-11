@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 17:51:40 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/09 18:40:22 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/11 17:16:54 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	main(int ac, char **av, char **envp)
 	int		i;
 	int		status;
 	
-	if ((ft_strncmp("here_doc", av[1], 8) == 0) && (ac >= 6))
+	if ((ft_strcmp("here_doc", av[1]) == 0) && (ac >= 6))
 	{
 		cmd.if_here_doc = 1;
 		cmd.max = ac - 4;

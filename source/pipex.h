@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 19:47:18 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/08 20:12:58 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/11 19:07:59 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,11 @@ typedef struct s_pipex {
 
 }	t_pipex;
 
+int     open_tmp_file(int fd);
+int     check_limiter(char *str, char *limiter);
 int     open_here_doc(t_pipex *cmd, char *first_arg);
 int     here_doc(char *limiter, t_pipex *cmd, char **envp);
-int		ft_strncmp(char *s1, char *s2, int n);
+int		ft_strcmp(char *s1, char *s2);
 int     check_command(char *str, char **envp, t_pipex *cmd);
 int		check_access(t_pipex *cmd, char *path);
 int     check_here_doc(char *str, int ac);

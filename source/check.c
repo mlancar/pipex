@@ -6,11 +6,29 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:28:37 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/08 18:12:58 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/11 19:08:55 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	check_limiter(char *str, char *limiter)
+{
+	int	i;
+
+	i = 0;
+	if (!str || !limiter)
+		return (-1);
+	while ((str[i] && limiter[i]))
+	{
+		if (str[i] != limiter[i])
+			return (-1);
+		i++;
+	}
+	if (str[i] == '\n' && limiter[i] == '\0')
+		return (0);
+	return (str[i] - limiter[i]);
+}
 
 int	check_command(char *str, char **envp, t_pipex *cmd)
 {
