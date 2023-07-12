@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/07 19:31:21 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/08 16:11:48 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/12 17:50:32 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
 # include <stdlib.h>
 # include <unistd.h>
 
-char	*get_next_line(int fd);
+char	*get_next_line(int fd, int mode);
 char	*join(char *s1, char *s2);
 char	*ft_substr(char *s, int start, int len);
 char	*dup_line(char **s);

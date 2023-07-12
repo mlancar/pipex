@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:28:37 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/11 19:08:55 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/12 20:48:08 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	check_limiter(char *str, char *limiter)
 
 	i = 0;
 	if (!str || !limiter)
-		return (-1);
+		return (0);
 	while ((str[i] && limiter[i]))
 	{
 		if (str[i] != limiter[i])
@@ -30,7 +30,7 @@ int	check_limiter(char *str, char *limiter)
 	return (str[i] - limiter[i]);
 }
 
-int	check_command(char *str, char **envp, t_pipex *cmd)
+int	check_command(char *str, t_pipex *cmd)
 {
 	int		i;
 
@@ -38,13 +38,13 @@ int	check_command(char *str, char **envp, t_pipex *cmd)
 	cmd->name = ft_split(str, ' ');
 	if (!cmd->name)
 		return (1);
-	while (envp[i])
+	while (cmd->envp[i])
 	{
-		if (strncmp(envp[i], "PATH", 4) == 0)
+		if (strncmp(cmd->envp[i], "PATH", 4) == 0)
 			break ;
 		i++;
 	}
-	if (check_access(cmd, &envp[i][5]) == 0)
+	if (check_access(cmd, &cmd->envp[i][5]) == 0)
 		return (0);
 	return (1);
 }

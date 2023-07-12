@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:27:38 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/11 17:17:32 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/12 20:35:31 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ int	ft_strlen(char *str)
 	return (i);
 }
 
-void	ft_putstr_fd(char *str, int fd)
+void	ft_putstr_fd(char *str, t_pipex *cmd)
 {
 	int	len;
 
 	len = ft_strlen(str);
 	//dprintf(2, "fd = %d\n", fd);
-	if (write(fd, str, len) == -1)
+	if (write(cmd->fd_tmp, str, len) == -1)
 	{
 		perror("write");
 		dprintf(2, "%d\n", errno);

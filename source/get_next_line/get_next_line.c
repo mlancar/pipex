@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/02 12:51:40 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/08 18:04:41 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/12 17:45:52 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,18 @@ void	check_read(char *buf, int r)
 		buf[0] = 0;
 }
 
-char	*get_next_line(int fd)
+char	*get_next_line(int fd, int mode)
 {
 	static char		*save;
 	int				r;
 	int				backslash_n;
 	char			*buf;
 
+	if (mode == 1)
+	{
+		free(save);
+		return (NULL);
+	}
 	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	backslash_n = -1;
