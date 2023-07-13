@@ -6,15 +6,15 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 21:28:45 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/05 14:57:32 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/13 12:15:07 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-void free_tab(char **tab)
+void	free_tab(char **tab)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (tab[i])
@@ -25,7 +25,7 @@ void free_tab(char **tab)
 	free(tab);
 }
 
-void free_and_exit(char *str, t_pipex *cmd)
+void	free_and_exit(char *str, t_pipex *cmd)
 {
 	free_tab(cmd->name);
 	free(cmd->path);

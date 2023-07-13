@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:28:37 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/12 20:48:08 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/13 12:13:16 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ int	check_access(t_pipex *cmd, char *path)
 			return (1);
 		}
 		free(cmd->path);
-		
 		i++;
 	}
 	free_tab(split_path);

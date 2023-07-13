@@ -6,15 +6,15 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 17:07:59 by malancar          #+#    #+#             */
-/*   Updated: 2023/06/30 21:25:31 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/13 19:42:34 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <stdio.h>
-# include "pipex.h"
+#include "pipex.h"
 
-int	len_word(char *str, char c)
+int	len_words(char *str, char c)
 {
 	int	i;
 	int	len;
@@ -26,12 +26,13 @@ int	len_word(char *str, char c)
 	while (str[i] && str[i] != c)
 	{
 		len++;
-		i++;
+		if (str[i])
+			i++;
 	}
 	return (len);
 }
 
-int	nbr_word(char *str, char c)
+int	nbr_words(char *str, char c)
 {
 	int	i;
 	int	nbr;
@@ -42,49 +43,60 @@ int	nbr_word(char *str, char c)
 		i++;
 	while (str[i])
 	{
-		if (str[i] != c)
+		if (str[i] && str[i] != c)
 		{
 			while (str[i] && str[i] != c)
 				i++;
 			nbr++;
 		}
-		if (str[i] == c)
+		if (str[i])
 			i++;
 	}
 	return (nbr);
 }
 
+int	fill_tab(char *str, int i, char ***tab, char c)
+{
+	int	k;
+	int	j;
+
+	j = 0;
+	while (str[i])
+	{
+		if (str[i] && str[i] != c)
+		{
+			k = 0;
+			(*tab)[j] = malloc(sizeof(char) * (len_words(&str[i], c) + 1));
+			if (!(*tab))
+				return (0);
+			while (str[i] && str[i] != c)
+			{
+				(*tab)[j][k] = str[i];
+				i++;
+				k++;
+			}
+			(*tab)[j++][k] = '\0';
+		}
+		if (str[i])
+			i++;
+	}
+	(*tab)[j] = NULL;
+	return (1);
+}
+
 char	**ft_split(char *str, char c)
 {
 	int		i;
-	int		j;
-	int		k;
 	char	**tab;
 
 	i = 0;
-	j = 0;
-	tab = malloc(sizeof(char *) * (nbr_word(str, c) + 1));
+	tab = malloc(sizeof(char *) * (nbr_words(str, c) + 1));
 	if (!tab)
 		return (NULL);
-	while (str[i])
-	{
-		while (str[i] && str[i] == c)
-			i++;
-		k = 0;
-		tab[j] = malloc(sizeof(char) * (len_word(&str[i], c) + 1));
-		if (!tab[j])
-			return (free_tab(tab), NULL);
-		while (str[i] && str[i] != c)
-		{
-			tab[j][k] = str[i];
-			k++;
-			if (str[i])
-				i++;
-		}
-		tab[j][k] = '\0';
-		j++;
-	}
-	tab[j] = NULL;
+	while (str[i] && str[i] == c)
+		i++;
+	if (fill_tab(str, i, &tab, c) == 0)
+		return (free_tab(tab), NULL);
 	return (tab);
 }
 
@@ -93,17 +105,13 @@ char	**ft_split(char *str, char c)
 	int		i;
 	char	**tab;
 
+	(void)ac;
 	i = 0;
-	if (ac == 3)
-	{	
-		tab = ft_split(av[1], av[2][0]);
-		while (tab[i])
-		{
-			printf("%s\n", tab[i]);
-			i++;
-		}
-		free_tab(tab);
-		free(tab);
+	tab = ft_split(av[1], av[2][0]);
+	while (tab[i])
+	{
+		printf("tab = %s\n", tab[i]);
+		i++;
 	}
-	return (0);
+	free_tab(tab);
 }*/

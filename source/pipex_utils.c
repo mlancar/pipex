@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:27:38 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/12 20:35:31 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/13 14:03:02 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	ft_putstr_fd(char *str, t_pipex *cmd)
 	int	len;
 
 	len = ft_strlen(str);
-	//dprintf(2, "fd = %d\n", fd);
 	if (write(cmd->fd_tmp, str, len) == -1)
 	{
 		perror("write");
@@ -35,7 +34,7 @@ void	ft_putstr_fd(char *str, t_pipex *cmd)
 	}
 }
 
-int		ft_strcmp(char *s1, char *s2)
+int	ft_strcmp(char *s1, char *s2)
 {
 	int	i;
 
@@ -85,11 +84,10 @@ char	*ft_strdup(char *s1)
 {
 	char	*s2;
 	int		i;
-	
-   
-    if (!s1)
-        return (NULL);
-    i = 0;
+
+	if (!s1)
+		return (NULL);
+	i = 0;
 	s2 = malloc(sizeof(char) * (ft_strlen(s1) + 1));
 	while (s1[i])
 	{
