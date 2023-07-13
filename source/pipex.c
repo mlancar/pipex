@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:27:53 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/12 20:50:46 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/13 08:25:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 int	child(int fd_in, int fd_out, int fd_other, t_pipex *cmd)
 {
+	dprintf(2, "cc child\n");
 	cmd->pid[cmd->index_pid - 1] = fork();
 	if (cmd->pid[cmd->index_pid - 1] < 0)
 		free_and_exit("fork", cmd);
@@ -39,13 +40,6 @@ int	child(int fd_in, int fd_out, int fd_other, t_pipex *cmd)
 
 int	here_doc(char *limiter, t_pipex *cmd)
 {
-	char	*read_line;
-	int		len_limiter;
-	//char	file_name[7];
-	//int	fd;
-
-	len_limiter = ft_strlen(limiter);
-	read_line = NULL;
 	cmd->fd_tmp = 0;
 	cmd->fd_tmp = open_and_fill_here_doc(cmd, limiter);
 	close(cmd->fd_tmp);

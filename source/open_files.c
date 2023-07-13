@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   open_files.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 12:13:28 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/12 20:36:49 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/12 23:08:01 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,23 +15,23 @@
 int	init_struct(t_pipex *cmd, char **av, int ac)
 {
 
-	if ((ft_strcmp("here_doc", av[1]) == 0) && (ac >= 6))
+	if ((ft_strcmp("here_doc", av[1]) == 0) && (ac > 5))
 	{
 		cmd->if_here_doc = 1;
 		cmd->index = 3;
 		cmd->max = ac - 4;
 		open_outfile(cmd, av[ac - 1]);
 	}
-	else
+	else if ((ft_strcmp("here_doc", av[1]) != 0) && (ac > 4))
 	{
-		if (ac < 5)
-			return (0);
 		open_infile(cmd, av[1]);
-		open_outfile(cmd, av[ac - 1]);
+		open_outfile(cmd, av[ac - 1]);//proteger
 		cmd->if_here_doc = 0;
 		cmd->index = 2;
 		cmd->max = ac - 3;//init cmd start
 	}
+	else
+		return (0);
 	cmd->index_pid = 1;
 	cmd->first = 1;
 	cmd->last = cmd->max;
