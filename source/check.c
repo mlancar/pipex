@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:28:37 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/13 12:13:16 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/16 21:24:50 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,12 @@ int	check_command(char *str, t_pipex *cmd)
 		return (1);
 	while (cmd->envp[i])
 	{
-		if (strncmp(cmd->envp[i], "PATH", 4) == 0)
+		if (cmd->envp[i][0] == 'P' && cmd->envp[i][1] == 'A' &&
+			cmd->envp[i][2] == 'T' && cmd->envp[i][3] == 'H')
 			break ;
 		i++;
 	}
+	
 	if (check_access(cmd, &cmd->envp[i][5]) == 0)
 		return (0);
 	return (1);

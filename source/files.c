@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 12:13:28 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/13 18:34:53 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/16 20:23:23 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	get_rand_name(t_pipex *cmd)
 		free_and_exit("open", cmd);
 	cmd->rand_name[6] = '\0';
 	i = 0;
-	while (i < 7)
+	while (i < 6)
 	{
 		cmd->rand_name[i] = cmd->rand_name[i] % 26;
 		if (cmd->rand_name[i] < 0)
@@ -52,7 +52,7 @@ void	fill_here_doc(char **read_line, char *limiter, t_pipex *cmd)
 	write(1, "here_doc> ", 10);
 	*read_line = get_next_line(0, 0);
 	if (*read_line == NULL)
-		write(2, "warning: here-doc at line 1 delimited by end-of-file\n", 54);
+		write(2, "\nwarning: here-doc delimited by end-of-file\n", 45);
 	if (check_limiter(*read_line, limiter) != 0)
 		ft_putstr_fd(*read_line, cmd);
 }

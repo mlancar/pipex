@@ -6,20 +6,24 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:27:38 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/13 14:03:02 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/16 21:07:20 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int	ft_strlen(char *str)
+int		ft_strchr(char *str, char c)
 {
 	int	i;
 
 	i = 0;
 	while (str[i])
+	{
+		if (str[i] == c)
+			return (1);
 		i++;
-	return (i);
+	}
+	return (0);
 }
 
 void	ft_putstr_fd(char *str, t_pipex *cmd)
@@ -30,7 +34,6 @@ void	ft_putstr_fd(char *str, t_pipex *cmd)
 	if (write(cmd->fd_tmp, str, len) == -1)
 	{
 		perror("write");
-		dprintf(2, "%d\n", errno);
 	}
 }
 

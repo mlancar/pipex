@@ -6,13 +6,13 @@
 #    By: malancar <malancar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/05 15:09:38 by malancar          #+#    #+#              #
-#    Updated: 2023/07/12 17:52:26 by malancar         ###   ########.fr        #
+#    Updated: 2023/07/16 20:03:39 by malancar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC	= cc
 
-CFLAGS	= -Wextra -Werror -Wall
+CFLAGS	= -Wextra -Werror -Wall 
 
 NAME	= pipex
 
@@ -22,9 +22,11 @@ SRC		= check.c			\
 		  pipex.c			\
 		  pipex_utils.c		\
 		  ft_split.c		\
-		  open_files.c		\
+		  files.c			\
 		  error.c			\
-		  main.c			
+		  main.c			\
+		  get_next_line.c	\
+		  get_next_line_utils.c	
 
 OBJ =	$(SRC:.c=.o)
 DEPS = $(SRC:.c=.d)
