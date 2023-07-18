@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/29 12:13:28 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/16 20:23:23 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/18 18:05:47 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	fill_here_doc(char **read_line, char *limiter, t_pipex *cmd)
 {
 	int	nbr_pipe;
 
-	nbr_pipe = cmd->max;
+	nbr_pipe = cmd->max - 1;
 	while (nbr_pipe > 0)
 	{
 		write(1, "pipe ", 5);
@@ -54,7 +54,7 @@ void	fill_here_doc(char **read_line, char *limiter, t_pipex *cmd)
 	if (*read_line == NULL)
 		write(2, "\nwarning: here-doc delimited by end-of-file\n", 45);
 	if (check_limiter(*read_line, limiter) != 0)
-		ft_putstr_fd(*read_line, cmd);
+		ft_putstr_fd(*read_line, cmd->fd_tmp);
 }
 
 void	open_and_fill_here_doc(t_pipex *cmd, char *limiter)

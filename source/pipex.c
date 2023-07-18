@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipex.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:27:53 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/18 14:11:22 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/18 18:43:22 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,6 @@
 
 void	exec_cmd(int fd_in, int fd_out, int fd_other, t_pipex *cmd)
 {
-	dprintf(2, "cmd infile = %d\n", cmd->infile);
-	dprintf(2, "cmd->outfile = %d\n", cmd->outfile);
-	dprintf(2, "fd[0] = %d\n", cmd->fd[0]);
-	dprintf(2, "fd[1] = %d\n", cmd->fd[1]);
-	dprintf(2, "fd_in = %d\n", fd_in);
-	dprintf(2, "fd_out = %d\n", fd_out);
-	dprintf(2, "fd_other = %d\n", fd_other);
 	cmd->pid[cmd->index_pid - 1] = fork();
 	if (cmd->pid[cmd->index_pid - 1] < 0)
 		free_and_exit("fork", cmd);
@@ -28,7 +21,8 @@ void	exec_cmd(int fd_in, int fd_out, int fd_other, t_pipex *cmd)
 	{
 		if (check_command(cmd->argv[cmd->index], cmd) == 0)
 		{
-			write(2, "command not found\n", 18);
+			ft_putstr_fd(cmd->name[0], 2);
+			write(2, ": command not found\n", 20);
 			error_cmd(127, cmd);
 		}
 		else if ((dup2(fd_in, 0) != -1) && (dup2(fd_out, 1) != -1))
@@ -36,23 +30,19 @@ void	exec_cmd(int fd_in, int fd_out, int fd_other, t_pipex *cmd)
 			if ((cmd->index_pid != cmd->last))
 				close(fd_other);
 			if (execve(cmd->path, cmd->name, cmd->envp))
+			{
+				dprintf(2, "path = %s, name %s\n", cmd->path, cmd->name[0]);
+				perror("execve");
 				error_cmd(0, cmd);
+			}
 		}
 		else
-		{
-			dprintf(2, "index = %d cc\n", cmd->index);
 			error_cmd(0, cmd);
-		}
 	}
 	else
 	{
-		if ((fd_in >= 0) && (close(fd_in) == -1))
-			dprintf(2, "error close fd_in\n");
-		dprintf(2, "errno = %d\n\n", errno);
-		if ((fd_out >= 0) && (close(fd_out) == -1))
-			dprintf(2, "error close fd_out\n");
-		dprintf(2, "errno = %d\n\n", errno);
-		
+		check_close(fd_in);
+		check_close(fd_out);
 	}
 }
 
@@ -84,8 +74,6 @@ void	pipex(t_pipex *cmd)
 		free_and_exit("pipe", cmd);
 	while (cmd->index_pid <= cmd->max)
 	{
-		dprintf(2, "cmd->index_pid = %d\n", cmd->index_pid);
-		dprintf(2, "cmd->index = %d\n", cmd->index);
 		if (cmd->index_pid == cmd->first)
 			first_cmd(cmd);
 		else if (cmd->index_pid == cmd->last)

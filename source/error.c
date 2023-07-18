@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/30 21:28:45 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/17 16:05:52 by marvin           ###   ########.fr       */
+/*   Updated: 2023/07/18 16:36:32 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,14 +39,16 @@ void	error_cmd(int return_value, t_pipex *cmd)
 	free_tab(cmd->name);
 	free(cmd->path);
 	free(cmd->pid);
-	close(cmd->fd[0]);
-	close(cmd->fd[1]);
-	close(cmd->outfile);
+	check_close(cmd->fd[0]);
+	check_close(cmd->fd[1]);
+	check_close(cmd->outfile);
 	if (cmd->if_here_doc == 0)
-		close(cmd->infile);
+		check_close(cmd->infile);
 	else
-		close(cmd->fd_tmp);
+		check_close(cmd->fd_tmp);
 	if ((cmd->index_pid != cmd->first) && (cmd->index_pid != cmd->last))
-		close(cmd->previous_fd);
+		check_close(cmd->previous_fd);
 	exit(return_value);
 }
+
+
