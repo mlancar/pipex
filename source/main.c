@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 17:51:40 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/16 21:19:29 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/18 13:45:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,7 @@ int	init_struct(t_pipex *cmd, int ac)
 	cmd->index_pid = 1;
 	cmd->first = 1;
 	cmd->last = cmd->max;
+	dprintf(2, "cmd->last = %d\n", cmd->last);
 	return (1);
 }
 
