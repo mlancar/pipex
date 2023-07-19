@@ -6,13 +6,13 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/20 13:27:38 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/16 21:07:20 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/19 18:21:16 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
-int		ft_strchr(char *str, char c)
+int	ft_strchr(char *str, char c)
 {
 	int	i;
 
@@ -26,27 +26,15 @@ int		ft_strchr(char *str, char c)
 	return (0);
 }
 
-void	ft_putstr_fd(char *str, t_pipex *cmd)
+void	ft_putstr_fd(char *str, int fd)
 {
 	int	len;
 
 	len = ft_strlen(str);
-	if (write(cmd->fd_tmp, str, len) == -1)
+	if (write(fd, str, len) == -1)
 	{
 		perror("write");
 	}
-}
-
-int	ft_strcmp(char *s1, char *s2)
-{
-	int	i;
-
-	i = 0;
-	if (!s1 || !s2)
-		return (-1);
-	while ((s1[i] && s2[i]) && (s1[i] == s2[i]))
-		i++;
-	return (s1[i] - s2[i]);
 }
 
 char	*ft_strcat(char *dest, char *src)

@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 17:07:59 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/13 19:42:34 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/19 17:36:21 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	nbr_words(char *str, char c)
 
 	i = 0;
 	nbr = 0;
+	if (!str[0])
+		return (0);
 	while (str[i] && str[i] == c)
 		i++;
 	while (str[i])
@@ -89,6 +91,8 @@ char	**ft_split(char *str, char c)
 	int		i;
 	char	**tab;
 
+	if (!str)
+		return (NULL);
 	i = 0;
 	tab = malloc(sizeof(char *) * (nbr_words(str, c) + 1));
 	if (!tab)
@@ -99,19 +103,3 @@ char	**ft_split(char *str, char c)
 		return (free_tab(tab), NULL);
 	return (tab);
 }
-
-/*int	main(int ac, char **av)
-{
-	int		i;
-	char	**tab;
-
-	(void)ac;
-	i = 0;
-	tab = ft_split(av[1], av[2][0]);
-	while (tab[i])
-	{
-		printf("tab = %s\n", tab[i]);
-		i++;
-	}
-	free_tab(tab);
-}*/

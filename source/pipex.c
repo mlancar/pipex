@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:27:53 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/18 18:43:22 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/19 17:59:25 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,21 +20,13 @@ void	exec_cmd(int fd_in, int fd_out, int fd_other, t_pipex *cmd)
 	else if (cmd->pid[cmd->index_pid - 1] == 0)
 	{
 		if (check_command(cmd->argv[cmd->index], cmd) == 0)
-		{
-			ft_putstr_fd(cmd->name[0], 2);
-			write(2, ": command not found\n", 20);
-			error_cmd(127, cmd);
-		}
+			error_access_cmd(cmd);
 		else if ((dup2(fd_in, 0) != -1) && (dup2(fd_out, 1) != -1))
 		{
 			if ((cmd->index_pid != cmd->last))
 				close(fd_other);
 			if (execve(cmd->path, cmd->name, cmd->envp))
-			{
-				dprintf(2, "path = %s, name %s\n", cmd->path, cmd->name[0]);
-				perror("execve");
 				error_cmd(0, cmd);
-			}
 		}
 		else
 			error_cmd(0, cmd);
@@ -63,9 +55,8 @@ void	first_cmd(t_pipex *cmd)
 		exec_cmd(cmd->fd_tmp, cmd->fd[1], cmd->fd[0], cmd);
 		unlink(cmd->rand_name);
 	}
-	else 
+	else
 		exec_cmd(cmd->infile, cmd->fd[1], cmd->fd[0], cmd);
-		
 }
 
 void	pipex(t_pipex *cmd)

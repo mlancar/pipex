@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 19:47:18 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/18 18:03:19 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/19 18:20:36 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,28 +48,32 @@ typedef struct s_pipex {
 }	t_pipex;
 
 int		init_struct(t_pipex *cmd, int ac);
+
 int		check_limiter(char *str, char *limiter);
-int		ft_strcmp(char *s1, char *s2);
 int		check_command(char *str, t_pipex *cmd);
 int		check_access(t_pipex *cmd, char *path);
-int		ft_strchr(char *str, char c);
+void	check_close(int fd);
 
+int		ft_strchr(char *str, char c);
 char	**ft_split(char *str, char c);
 char	*ft_strdup(char *s1);
 char	*ft_strjoin(char *s1, char *s2, char c);
-
-void	check_close(int fd);
-void	error_cmd(int return_value, t_pipex *cmd);
-void	first_cmd(t_pipex *cmd);
-void	open_infile(t_pipex *cmd, char *first_arg);
-void	exec_cmd(int fd_in, int fd_out, int fd_other, t_pipex *cmd);
-void	here_doc(char *limiter, t_pipex *cmd);
-void	open_outfile(t_pipex *cmd, char *last_arg);
-void	open_and_fill_here_doc(t_pipex *cmd, char *limiter);
 void	ft_putstr_fd(char *str, int fd);
+
+void	error_access_cmd(t_pipex *cmd);
+void	error_empty_string(t_pipex *cmd);
+void	error_cmd(int return_value, t_pipex *cmd);
 void	free_tab(char **tab);
 void	free_and_exit(char *str, t_pipex *cmd);
+
+void	open_infile(t_pipex *cmd, char *first_arg);
+void	open_outfile(t_pipex *cmd, char *last_arg);
+void	open_and_fill_here_doc(t_pipex *cmd, char *limiter);
+
 void	pipex(t_pipex *cmd);
+void	first_cmd(t_pipex *cmd);
+void	here_doc(char *limiter, t_pipex *cmd);
 void	fill_here_doc(char **read_line, char *limiter, t_pipex *cmd);
+void	exec_cmd(int fd_in, int fd_out, int fd_other, t_pipex *cmd);
 
 #endif

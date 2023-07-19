@@ -6,11 +6,23 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 17:51:40 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/18 15:34:16 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/19 18:53:43 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
+
+int	ft_strcmp(char *s1, char *s2)
+{
+	int	i;
+
+	i = 0;
+	if (!s1 || !s2)
+		return (-1);
+	while ((s1[i] && s2[i]) && (s1[i] == s2[i]))
+		i++;
+	return (s1[i] - s2[i]);
+}
 
 int	init_struct(t_pipex *cmd, int ac)
 {
@@ -33,6 +45,8 @@ int	init_struct(t_pipex *cmd, int ac)
 		return (0);
 	cmd->index_pid = 1;
 	cmd->first = 1;
+	cmd->path = NULL;
+	cmd->name = NULL;
 	cmd->last = cmd->max;
 	return (1);
 }
