@@ -6,7 +6,7 @@
 #    By: malancar <malancar@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/07/05 15:09:38 by malancar          #+#    #+#              #
-#    Updated: 2023/07/19 18:18:15 by malancar         ###   ########.fr        #
+#    Updated: 2023/07/20 15:01:25 by malancar         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,6 +25,7 @@ SRC		= check.c			\
 		  files.c			\
 		  error.c			\
 		  main.c			\
+		  here_doc.c		\
 		  get_next_line.c	\
 		  get_next_line_utils.c	
 

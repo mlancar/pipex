@@ -6,7 +6,7 @@
 /*   By: malancar <malancar@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/04 16:27:53 by malancar          #+#    #+#             */
-/*   Updated: 2023/07/19 17:59:25 by malancar         ###   ########.fr       */
+/*   Updated: 2023/07/20 15:06:46 by malancar         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,6 @@ void	exec_cmd(int fd_in, int fd_out, int fd_other, t_pipex *cmd)
 		check_close(fd_in);
 		check_close(fd_out);
 	}
-}
-
-void	here_doc(char *limiter, t_pipex *cmd)
-{
-	cmd->fd_tmp = 0;
-	open_and_fill_here_doc(cmd, limiter);
-	cmd->fd_tmp = open(cmd->rand_name, O_RDONLY);
-	if (cmd->fd_tmp == -1)
-		free_and_exit("open", cmd);
 }
 
 void	first_cmd(t_pipex *cmd)
