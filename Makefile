@@ -12,13 +12,14 @@
 
 CC	= cc
 
-CFLAGS	= -Wextra -Werror -Wall
+FLAGS	= -Wextra -Werror -Wall
 
 NAME	= pipex
 
-HEADER = pipex.h
+HEADER = ./Includes
+HDR = $(HEADER)/pipex.h
 
-SRC		= check.c			\
+SOURCES	= check.c			\
 		  pipex.c			\
 		  pipex_utils.c		\
 		  ft_split.c		\
@@ -29,27 +30,32 @@ SRC		= check.c			\
 		  get_next_line.c	\
 		  get_next_line_utils.c	
 
-OBJ =	$(SRC:.c=.o)
-DEPS = $(SRC:.c=.d)
+SRCS = $(addprefix ./Sources/, $(SOURCES))
 
-RM	= rm -f
+OBJECTS =	$(SOURCES:.c=.o)
+OBJS = $(addprefix ./Objects/, $(OBJECTS))
+
+DEPENDENCIES = $(SOURCES:.c=.d)
+DEPS = $(addprefix ./Objects/, $(DEPENDENCIES))
 
 all:	 $(NAME)
 
-$(NAME):	$(OBJ) $(HEADER)
-		$(CC) $(CFLAGS) $(OBJ) -o $(NAME)
+$(NAME):	$(OBJS)
+			$(CC) $(FLAGS) -o $(NAME) $(OBJS)
 
-%.o:	%.c
-	@$(CC) $(CFLAGS) -MMD -c  $< -o $@
+RM = rm -rf
 
 clean:
-	$(RM) $(OBJ) $(DEPS)
+	$(RM) $(OBJS) $(DEPS)
 
 fclean: clean
 	@$(RM) $(NAME) $(DEPS)
 
 re:	fclean all
 
--include : $(DEPS)
+/Objects/%.o : ./Sources%.c $(HDR)
+				mkdir -p Objects
+				$(CC) $(FLAGS) -MMD -I $(HEADER) -o $@ -c $<
+
 
 .PHONY: all clean fclean re
